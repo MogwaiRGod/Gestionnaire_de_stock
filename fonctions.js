@@ -59,10 +59,22 @@ function updateStockUser(stock, item) {
 
 /*      /////////////////////       COMMANDE             ////////////////////// */
 
+function traiterCmd(nom, ref, qte, stock, tab, bdd_distrib) {
+    function calculPrix(nom, qte, bdd){
+        let tmp_pdt;
+        bdd.forEach(e => {
+            if (e.nom === nom){
+                tmp_pdt = e;
+            }
+        });
+        let prix = tmp_pdt.prix*qte;
+        return prix;
+    }
 
-
-function traiterCmd(nom, ref, qte, stock, tab) {
-    let total=0; 
+    let prix=calculPrix(nom, qte, bdd_distrib);
+    document.getElementById("prix").innerText=prix;
+    total+=prix;
+    document.getElementById("total").innerText=total;
 
     let item_input = {  // création d'un objet JSON de l'item commandé
         "nom" : nom,
