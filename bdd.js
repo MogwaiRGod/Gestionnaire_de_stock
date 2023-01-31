@@ -35,7 +35,7 @@ let stock_distributeur = [{ // le stock disponible du distributeur
     "quantite" : 47,
     "prix" : 24.90
 },{
-    "nom" : "JAVEL (L)",
+    "nom" : "Javel (L)",
     "ref" : "JAV4567",
     "quantite" : 104,
     "prix" : 3.69
