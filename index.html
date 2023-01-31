@@ -9,40 +9,65 @@
     </head>
 
     <body>
-        <div id="container-flexbox">
-            <div id="container-inputs">
-                <select id="nom-pdt">
-                    <option id="Huile de palme (L)">Huile de palme (L)</option>
-                    <option id="Gluten (kg)">Gluten (kg)</option>
-                    <option id="Farine de blé T55 (kg)">Farine de blé T55 (kg)</option>
-                    <option id="Sirop de maïs (L)">Sirop de maïs (L)</option>
-                    <option id="Glycérine (L)">Glycérine (L)</option>
-                    <option id="Javel (L)">Javel (L)</option>
-                </select>
-
-                <input id="ref-pdt" placeholder="Référence du produit">
-                <input id="qte-pdt" type="number" min="0" max="100">
-
-                <button id="btn">Ajouter</button>
-                
+        <nav></nav>
+        <div id="container">
+            <div id="col1">
+                <label>Votre stock actuel</label>
+                <table id="tableau-stock">
+                    <thead>
+                        <tr>
+                            <th>Nom</th>
+                            <th>Référence</th>
+                            <th>Stock</th>
+                        </tr>
+                    </thead>
+                </table>
             </div>
-            <div id="affichage-montant">
-                <p>Prix : <span id="prix"></span> €</p>
-                <p>Total : <span id="total"></span> €</p>
-            </div>    
-            <table id="tableau-stock">
 
-                <thead>
-                    <tr>
-                        <th>Nom</th>
-                        <th>Référence</th>
-                        <th>Stock</th>
-                    </tr>
-                </thead>
-
-            </table>
-            <button id="btn-valider">Valider</button>
             
+
+            <div id="col2">
+                <h1>TOTO Market</h1>
+                <label>Commande</label>
+                <div id="container-inputs">
+                    <select id="nom-pdt">
+                        <option id="Huile de palme (L)">Huile de palme (L)</option>
+                        <option id="Gluten (kg)">Gluten (kg)</option>
+                        <option id="Farine de blé T55 (kg)">Farine de blé T55 (kg)</option>
+                        <option id="Sirop de maïs (L)">Sirop de maïs (L)</option>
+                        <option id="Glycérine (L)">Glycérine (L)</option>
+                        <option id="Javel (L)">Javel (L)</option>
+                    </select>
+
+                    <input id="ref-pdt" placeholder="Référence du produit">
+                    <input id="qte-pdt" type="number" min="0" max="100">
+
+                    <button id="btn">Ajouter</button>
+                
+                    <div id="affichage-montant">
+                        <p>Prix : <span id="prix"></span> €</p>
+                        <p>Total : <span id="total"></span> €</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="col3">
+                <div id="tab2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M24 3l-.743 2h-1.929l-3.474 12h-13.239l-4.615-11h16.812l-.564 2h-13.24l2.937 7h10.428l3.432-12h4.195zm-15.5 15c-.828 0-1.5.672-1.5 1.5 0 .829.672 1.5 1.5 1.5s1.5-.671 1.5-1.5c0-.828-.672-1.5-1.5-1.5zm6.9-7-1.9 7c-.828 0-1.5.671-1.5 1.5s.672 1.5 1.5 1.5 1.5-.671 1.5-1.5c0-.828-.672-1.5-1.5-1.5z"/></svg>
+                    <label>Votre panier</label>
+                    <table id="tableau-panier">
+                        <thead>
+                            <tr>
+                                <th>Nom</th>
+                                <th>Référence</th>
+                                <th>Stock</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+
+                <button id="btn-valide r">Valider</button>
+            </div>
         </div>
 
         <script src="bdd.js" type="text/javascript"></script>
@@ -59,7 +84,7 @@
             let id_item_distrib = "distrib_item-"; let id_item_user = "item";
             let init=0;
             let background_ajout = 'rgb(166, 84, 69)';
-            let background_base = 'rgb(81, 81, 27)';
+            let background_base = 'rgb(58, 109, 43)';
             let nb_item;
             nb_item = itemsStock(nb_item, id_item_user);    // le numéro de l'item commandé
 

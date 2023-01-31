@@ -83,9 +83,10 @@ function traiterCmd(nom, ref, qte, stock, tab, bdd_distrib) {
     }
 
     // sinon, on peut procéder au traitement de la commande
-    let prix=calculPrix(nom, qte, bdd_distrib);
+    let prix=parseFloat(calculPrix(nom, qte, bdd_distrib),2);
     document.getElementById("prix").innerText=prix;
     total+=prix;
+    total=parseFloat(total, 2);
     document.getElementById("total").innerText=total;
     let item_input;
 
