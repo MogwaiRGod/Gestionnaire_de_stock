@@ -34,7 +34,6 @@ button, select, input {
     font-size: 16pt;
 }
 table {
-    background: rgb(81, 81, 27);
     margin: 1%;
     padding: 1%;
     width: 50vw;
@@ -47,17 +46,20 @@ p {
     font-family: Rockwell;
     color:azure;
     font-size: 20pt;
-    margin: 0 0 2% 0 ;
-    float: left;
+    text-align: left;
+    display: block;
 }
-tr, th, th {
+th, .init{
+    background: rgb(81, 81, 27);
     border : solid 2px beige;
     padding: 2%;
     width: 20%;
     height: fit-content;
 }
 td {
-    padding: 2% 0 2% 4%;
+    border : solid 2px beige;
+    padding: 2%;
+    background: rgb(166, 84, 69);
 }
 #btn-valider{
     background: tomato;

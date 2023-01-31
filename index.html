@@ -26,8 +26,12 @@
                 <button id="btn">Ajouter</button>
                 
             </div>
-            <p>Prix :<span id="prix"></span></p>
+            <div id="affichage-montant">
+                <p>Prix : <span id="prix"></span> €</p>
+                <p>Total : <span id="total"></span> €</p>
+            </div>    
             <table id="tableau-stock">
+
                 <thead>
                     <tr>
                         <th>Nom</th>
@@ -35,6 +39,7 @@
                         <th>Stock</th>
                     </tr>
                 </thead>
+
             </table>
             <button id="btn-valider">Valider</button>
             
@@ -46,14 +51,24 @@
 
             /*////////////             VARIABLES                       ////////////////*/
 
-            let nb_item = 0;    // le numéro de l'item commandé
+            let nb_item = localStorage.length;    // le numéro de l'item commandé
             let tableau_HTML = document.getElementById("tableau-stock");
+            let total=0;
+            let init= true;
+            let storage_init = false;
+
 
 
             /*/////////////                     SCRIPT                     //////// */
-
-            affichageStock(stock_user, tableau_HTML);   // on affiche le tableau du stock dans la page web
-                                                        // à partir du stock préalablement enregistré
+            
+            if (localStorage.length !== 0) { // s'il y a des items dans le local
+                storage_init = true;
+                recupItems(stock_user); // on les récupère
+                affichageStock(stock_user, tableau_HTML); // on affiche le tableau du stock dans la page web
+                                                         // à partir du stock préalablement enregistré
+            }
+            
+            init=false;
 
             btn.addEventListener('click', () => {   // à l'envoi du formulaire :
                 
@@ -66,7 +81,7 @@
                 // vérification des entrées
                 if (checkCmd(input_ref, input_qte) === 1) {
                     // si elles sont correctes, on peut traiter la commande
-                    traiterCmd(input_nom, input_ref, input_qte, stock_user, tableau_HTML);
+                    traiterCmd(input_nom, input_ref, input_qte, stock_user, tableau_HTML, stock_distributeur);
                 } else {
                     return;
                 }
