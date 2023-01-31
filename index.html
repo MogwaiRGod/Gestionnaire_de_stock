@@ -47,28 +47,41 @@
 
         <script src="bdd.js" type="text/javascript"></script>
         <script src="fonctions.js" type="text/javascript"></script>
+        <script src="fonctions_distrib.js" type="text/javascript"></script>
         <script>
 
             /*////////////             VARIABLES                       ////////////////*/
 
-            let nb_item = localStorage.length;    // le numéro de l'item commandé
             let tableau_HTML = document.getElementById("tableau-stock");
             let total=0;
-            let init= true;
             let storage_init = false;
+            let panier = [[]];
+            let id_item_distrib = "distrib_item-"; let id_item_user = "item";
+            let init=0;
+            let background_ajout = 'rgb(166, 84, 69)';
+            let background_base = 'rgb(81, 81, 27)';
+            let nb_item;
+            nb_item = itemsStock(nb_item, id_item_user);    // le numéro de l'item commandé
 
 
 
             /*/////////////                     SCRIPT                     //////// */
             
-            if (localStorage.length !== 0) { // s'il y a des items dans le local
-                storage_init = true;
-                recupItems(stock_user); // on les récupère
-                affichageStock(stock_user, tableau_HTML); // on affiche le tableau du stock dans la page web
-                                                         // à partir du stock préalablement enregistré
+            // vérification que le stock distributeur n'est pas vide
+            if (!existeStock(id_item_distrib)) {
+                setStock(stock_distributeur,id_item_distrib); // s'il est vide, on le remplit avec les données de base
+            } else {
+                stock_distributeur=getStock(stock_distributeur, id_item_distrib); // sinon, on récupère le stock afin d'être à jour
             }
-            
-            init=false;
+
+            // de même, on vérifit si l'utilisateur a des items dans son local
+            // console.log(existeStock(id_item_user));
+            if (existeStock(id_item_user)) {
+                stock_user=getStock(stock_user, id_item_user);
+                affichageStock(stock_user, tableau_HTML, background_base);
+                storage_init=true;
+                init=1;
+            }
 
             btn.addEventListener('click', () => {   // à l'envoi du formulaire :
                 
