@@ -1,13 +1,5 @@
 
-let stock_user = [{    // le stock actuel de l'utilisateur
-    "nom" : "Huile de palme (L)",
-    "ref" : "HDP36",
-    "quantite" : 8
-},{
-    "nom" : "Farine de blé T55 (kg)",
-    "ref" : "FDBT5577",
-    "quantite" : 7
-}];
+let stock_user = [];
 
 let stock_distributeur = [{ // le stock disponible du distributeur
     "nom" : "Huile de palme (L)",
