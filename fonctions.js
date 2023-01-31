@@ -12,7 +12,7 @@ function ajouterRangee(item){  // fonction qui ajoute et remplit une rangée
         if (init) {
             cellule.setAttribute("class", "init");;
         }
-        cellule.setAttribute("id", `table-${props[i]}-${item[`${props[0]}`]}`);  // la cellule suit la convention de nommage "table-propriété-nom"
+        cellule.setAttribute("id", `table-${props[i]}-${item[`${props[0]}`]}-${item.index}`);  // la cellule suit la convention de nommage "table-propriété-nom"
         cellule.innerText= item[`${props[i]}`];
         rangee.appendChild(cellule);
     }   // FIN POUR
@@ -100,29 +100,34 @@ function traiterCmd(nom, ref, qte, stock, tab, bdd_distrib) {
     let item_input;
 
     if (storage_init) {
-
+        console.log("bien");
         for (let i=0; i<stock.length; i++) {
-
-            if ( stock[i].nom == nom) {
+            console.log(stock[i].nom, nom, stock[i].ref, ref);
+            if ( stock[i].nom == nom && stock[i].ref == ref) {
+                
                 stock[i].quantite += parseInt(qte);
+                
                 localStorage.setItem('item'+i, JSON.stringify(stock[i]));
                 item_input = stock[i];
-                document.getElementById(`table-quantite-${item_input.nom}`).innerText = item_input.quantite;
-                document.getElementById(`table-quantite-${item_input.nom}`).style.background = 'rgb(166, 84, 69)';
-                console.log(`table-quantite-${item_input.nom}`);
-                break;
+                console.log(`table-quantite-${item_input.nom}-${i}`);
+                document.getElementById(`table-quantite-${item_input.nom}-${i}`).innerText = item_input.quantite;
+                document.getElementById(`table-quantite-${item_input.nom}-${i}`).style.background = 'rgb(166, 84, 69)';
+                return;
             }
         }
-    } else {
-        item_input = {  // création d'un objet JSON de l'item commandé
-            "nom" : nom,
-            "ref" : ref,
-            "quantite" : parseInt(qte)
-        };
-        localStorage.setItem('item'+nb_item, JSON.stringify(item_input));
-        stock=updateStockUser(stock, item_input);
-        updateAffichageStock(item_input, tab);
     }
+    console.log("not ok");
+    storage_init=true;
+    item_input = {  // création d'un objet JSON de l'item commandé
+        "nom" : nom,
+        "ref" : ref,
+        "quantite" : parseInt(qte),
+        "index" : parseInt(nb_item)
+    };
+    localStorage.setItem('item'+nb_item, JSON.stringify(item_input));
+    stock.push(item_input);
+    updateAffichageStock(item_input, tab);
+    console.log(stock);
 
     nb_item++;  // on incrémente le numéro d'item pour la suite de la commande        
 
