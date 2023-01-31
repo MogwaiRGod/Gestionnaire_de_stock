@@ -49,7 +49,6 @@ function recupItems (stock){    // récupération des items du stock utilisateur
           
     for (let i=0; i<localStorage.length; i++) {
         stock.push(JSON.parse(localStorage.getItem(`item${i}`)));
-        console.log(stock[i]);
     }
         
     return stock;
@@ -100,23 +99,17 @@ function traiterCmd(nom, ref, qte, stock, tab, bdd_distrib) {
     let item_input;
 
     if (storage_init) {
-        console.log("bien");
         for (let i=0; i<stock.length; i++) {
-            console.log(stock[i].nom, nom, stock[i].ref, ref);
             if ( stock[i].nom == nom && stock[i].ref == ref) {
-                
                 stock[i].quantite += parseInt(qte);
-                
                 localStorage.setItem('item'+i, JSON.stringify(stock[i]));
                 item_input = stock[i];
-                console.log(`table-quantite-${item_input.nom}-${i}`);
                 document.getElementById(`table-quantite-${item_input.nom}-${i}`).innerText = item_input.quantite;
                 document.getElementById(`table-quantite-${item_input.nom}-${i}`).style.background = 'rgb(166, 84, 69)';
                 return;
             }
         }
     }
-    console.log("not ok");
     storage_init=true;
     item_input = {  // création d'un objet JSON de l'item commandé
         "nom" : nom,
@@ -127,7 +120,6 @@ function traiterCmd(nom, ref, qte, stock, tab, bdd_distrib) {
     localStorage.setItem('item'+nb_item, JSON.stringify(item_input));
     stock.push(item_input);
     updateAffichageStock(item_input, tab);
-    console.log(stock);
 
     nb_item++;  // on incrémente le numéro d'item pour la suite de la commande        
 
