@@ -6,10 +6,14 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Metro</title>
         <link rel="stylesheet" href="stylesheet.css">
+        <link rel="stylesheet" href="https://use.typekit.net/wmc8vot.css">
     </head>
 
     <body>
-        <nav></nav>
+        <nav>
+            <img name="icone-hamburger" alt="hamburger" src="iconmonstr-menu-lined.svg" id="ham">
+            <img name="logo-secondaire-toto-market" alt="logo-secondaire-toto-market" src="totomarket_TOTO_market2.svg" id="logo2">
+        </nav>
         <div id="container">
             <div id="col1">
                 <label>Votre stock actuel</label>
@@ -27,7 +31,8 @@
             
 
             <div id="col2">
-                <h1>TOTO Market</h1>
+                <img name="logo-toto-market" alt="logo-toto-market" src="totomarket_TOTO_market1.svg" id="logo-principal">
+                
                 <label>Commande</label>
                 <div id="container-inputs">
                     <select id="nom-pdt">
@@ -42,7 +47,7 @@
                     <input id="ref-pdt" placeholder="Référence du produit">
                     <input id="qte-pdt" type="number" min="0" max="100">
 
-                    <button id="btn">Ajouter</button>
+                    <button id="btn">+</button>
                 
                     <div id="affichage-montant">
                         <p>Prix : <span id="prix"></span> €</p>
@@ -53,7 +58,7 @@
             
             <div id="col3">
                 <div id="tab2">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M24 3l-.743 2h-1.929l-3.474 12h-13.239l-4.615-11h16.812l-.564 2h-13.24l2.937 7h10.428l3.432-12h4.195zm-15.5 15c-.828 0-1.5.672-1.5 1.5 0 .829.672 1.5 1.5 1.5s1.5-.671 1.5-1.5c0-.828-.672-1.5-1.5-1.5zm6.9-7-1.9 7c-.828 0-1.5.671-1.5 1.5s.672 1.5 1.5 1.5 1.5-.671 1.5-1.5c0-.828-.672-1.5-1.5-1.5z"/></svg>
+                    <svg id='svg-panier'xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M24 3l-.743 2h-1.929l-3.474 12h-13.239l-4.615-11h16.812l-.564 2h-13.24l2.937 7h10.428l3.432-12h4.195zm-15.5 15c-.828 0-1.5.672-1.5 1.5 0 .829.672 1.5 1.5 1.5s1.5-.671 1.5-1.5c0-.828-.672-1.5-1.5-1.5zm6.9-7-1.9 7c-.828 0-1.5.671-1.5 1.5s.672 1.5 1.5 1.5 1.5-.671 1.5-1.5c0-.828-.672-1.5-1.5-1.5z"/></svg>
                     <label>Votre panier</label>
                     <table id="tableau-panier">
                         <thead>
@@ -64,9 +69,8 @@
                             </tr>
                         </thead>
                     </table>
+                    <button id="btn-valider" onclick="resetPanier()">Valider</button>
                 </div>
-
-                <button id="btn-valide r">Valider</button>
             </div>
         </div>
 
@@ -78,15 +82,17 @@
             /*////////////             VARIABLES                       ////////////////*/
 
             let tableau_HTML = document.getElementById("tableau-stock");
+            let tableau_panier = document.getElementById("tableau-panier");
             let total=0;
             let storage_init = false;
-            let panier = [[]];
+            let panier = [];
             let id_item_distrib = "distrib_item-"; let id_item_user = "item";
             let init=0;
-            let background_ajout = 'rgb(166, 84, 69)';
-            let background_base = 'rgb(58, 109, 43)';
+            let background_ajout = '#EE8539;';
+            let background_base = 'rgba(42,164,206, 0.5)';
             let nb_item;
             nb_item = itemsStock(nb_item, id_item_user);    // le numéro de l'item commandé
+            let hover_svg = "#D9D9DD";
 
 
 
@@ -100,32 +106,49 @@
             }
 
             // de même, on vérifit si l'utilisateur a des items dans son local
-            // console.log(existeStock(id_item_user));
             if (existeStock(id_item_user)) {
                 stock_user=getStock(stock_user, id_item_user);
-                affichageStock(stock_user, tableau_HTML, background_base);
+                affichageStock(stock_user, tableau_HTML, background_base,'stock');
                 storage_init=true;
                 init=1;
             }
 
             btn.addEventListener('click', () => {   // à l'envoi du formulaire :
-                
+                console.log("ok1");
                 // récupération des inputs
                 let input_nom = document.getElementById("nom-pdt");
                 input_nom = input_nom.options[input_nom.selectedIndex].value;
                 let input_ref = document.getElementById("ref-pdt").value;
                 let input_qte = document.getElementById("qte-pdt").value;
-
+                console.log("ok2");
                 // vérification des entrées
                 if (checkCmd(input_ref, input_qte) === 1) {
                     // si elles sont correctes, on peut traiter la commande
-                    traiterCmd(input_nom, input_ref, input_qte, stock_user, tableau_HTML, stock_distributeur);
+                    console.log("ok3");
+                    traiterCmd(input_nom, input_ref, input_qte, tableau_panier, stock_distributeur, "panier");
                 } else {
                     return;
                 }
 
                 return 'erreur 1';
             });
+
+            ham.addEventListener('mouseover', () => {
+                document.getElementById("col1").style.visibility = "visible";
+
+            });
+
+            document.getElementById("col1").style.visibility = "hidden";
+
+            function resetPanier() {
+                // console.log(tableau_panier);
+                // for(let i=parseInt(tableau_panier.childElementCount)+1; i>1; i--) {  // enfant 0 <=> thead => on veut le garder !
+                //     tableau_panier.style.visibility = 'hidden';
+                // }
+                // return;
+            };
+
+                
 
 
         </script>

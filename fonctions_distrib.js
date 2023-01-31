@@ -45,6 +45,7 @@ function getStock(stock, id){
 
 //  fonction qui vérifie que l'item demandé en telle quantité est bien disponible dans le stock distributeur
 function checkStockDistrib(stock, nom, qte) {
+
     let check = 1;
     stock.forEach(function(e){
         if (e.nom == nom) {
@@ -57,6 +58,7 @@ function checkStockDistrib(stock, nom, qte) {
             }
         }
     });
+    console.log("noprob");
     return check;
 }
 
