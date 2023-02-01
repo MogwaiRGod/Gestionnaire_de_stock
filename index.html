@@ -4,7 +4,7 @@
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Metro</title>
+        <title>TOTO Market</title>
         <link rel="stylesheet" href="stylesheet.css">
         <link rel="stylesheet" href="https://use.typekit.net/wmc8vot.css">
     </head>
@@ -69,7 +69,7 @@
                             </tr>
                         </thead>
                     </table>
-                    <button id="btn-valider" onclick="resetPanier()">Valider</button>
+                    <button id="btn-valider" onclick="envoiPanier(stock_user, panier, tableau_panier, id_panier)">Valider</button>
                 </div>
             </div>
         </div>
@@ -86,13 +86,15 @@
             let total=0;
             let storage_init = false;
             let panier = [];
-            let id_item_distrib = "distrib_item-"; let id_item_user = "item";
+            let id_item_distrib = "distrib_item-"; let id_item_user = "item"; let id_panier = "panier";
             let init=0;
             let background_ajout = '#EE8539;';
             let background_base = 'rgba(42,164,206, 0.5)';
-            let nb_item;
+            let nb_item=0;
             nb_item = itemsStock(nb_item, id_item_user);    // le numéro de l'item commandé
             let hover_svg = "#D9D9DD";
+            let clic_nav = false;
+            let index_panier=0;
 
 
 
@@ -105,7 +107,7 @@
                 stock_distributeur=getStock(stock_distributeur, id_item_distrib); // sinon, on récupère le stock afin d'être à jour
             }
 
-            // de même, on vérifit si l'utilisateur a des items dans son local
+            // de même, on vérifie si l'utilisateur a des items dans son local
             if (existeStock(id_item_user)) {
                 stock_user=getStock(stock_user, id_item_user);
                 affichageStock(stock_user, tableau_HTML, background_base,'stock');
@@ -113,18 +115,23 @@
                 init=1;
             }
 
+            // et on regarde s'il a déjà un panier
+            if (existeStock(id_panier)) {
+                panier=getStock(panier, id_panier);
+                nb_item = panier.length; // nombre d'items dans le panier
+                affichageStock(panier, tableau_panier, background_base,'panier');
+            }
+
             btn.addEventListener('click', () => {   // à l'envoi du formulaire :
-                console.log("ok1");
                 // récupération des inputs
                 let input_nom = document.getElementById("nom-pdt");
                 input_nom = input_nom.options[input_nom.selectedIndex].value;
                 let input_ref = document.getElementById("ref-pdt").value;
                 let input_qte = document.getElementById("qte-pdt").value;
-                console.log("ok2");
+
                 // vérification des entrées
-                if (checkCmd(input_ref, input_qte) === 1) {
+                if (checkCmd(input_ref, input_qte)) {
                     // si elles sont correctes, on peut traiter la commande
-                    console.log("ok3");
                     traiterCmd(input_nom, input_ref, input_qte, tableau_panier, stock_distributeur, "panier");
                 } else {
                     return;
@@ -133,20 +140,17 @@
                 return 'erreur 1';
             });
 
-            ham.addEventListener('mouseover', () => {
-                document.getElementById("col1").style.visibility = "visible";
-
+            ham.addEventListener('click', () => {
+                let nav = document.getElementById("col1");
+                if (!clic_nav) {
+                    nav.style.visibility = "visible";
+                    clic_nav = true;
+                } else {
+                    nav.style.visibility = "hidden";
+                    clic_nav = false;
+                }
+                return;
             });
-
-            document.getElementById("col1").style.visibility = "hidden";
-
-            function resetPanier() {
-                // console.log(tableau_panier);
-                // for(let i=parseInt(tableau_panier.childElementCount)+1; i>1; i--) {  // enfant 0 <=> thead => on veut le garder !
-                //     tableau_panier.style.visibility = 'hidden';
-                // }
-                // return;
-            };
 
                 
 

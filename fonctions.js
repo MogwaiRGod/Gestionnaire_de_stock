@@ -63,13 +63,29 @@ function updateStockUser(stock, item) {
     return stock;
 }
 
-/*      /////////////////////       COMMANDE             ////////////////////// */
+/*      /////////////////////////       COMMANDE/PANIER             ////////////////////// */
+
+function resetPanier(panier, tab, id) {
+    for (let i=0; i<panier.length; i++){
+        console.log("rangee"+panier[i].index+id_panier);
+        document.getElementById("rangee"+panier[i].index+id_panier).style.display = 'none';
+    }
+    videStock(id, panier);
+    index_panier=0;
+    panier = [];
+    tab = document.createElement("table");
+    tab2.appendChild(tab);
+    tab.setAttribute('id', 'tableau_panier');
+    affichageStock(panier, tab, background_base, id_panier);
+    affichageStock(stock_user, tableau_HTML, background_base, 'stock');
+
+    return panier, tab;
+};
 
 function ajouterAuPanier(nom, ref, qte, panier, nomtab, tab){
-    let index=0;
+    
     for (let i=0; i<panier.length; i++) {
         if (panier[i].nom == nom && panier[i].ref == ref) {
-            index++;
             console.log(panier[i]);
             panier[i].quantite += parseInt(qte);
             item_input = panier[i];
@@ -83,53 +99,59 @@ function ajouterAuPanier(nom, ref, qte, panier, nomtab, tab){
         "nom" : nom,
         "ref" : ref,
         "quantite" : parseInt(qte),
-        "index" : parseInt(index)
+        "index" : parseInt(index_panier)
     };
+    index_panier++;
     panier.push(item_input);
     updateAffichageStock(item_input, tab, background_ajout, nomtab);
+    setStock(panier, id_panier, panier.index);
     console.log(panier);
     return panier;
 }
 
+function envoiPanier(stock, panier, tab, id) {
+    stock = panier;
+    resetPanier(panier, tab, id);
+
+    return stock;
+}
+
 function traiterCmd(nom, ref, qte,tab, bdd_distrib, nomtab) {
-    console.log("omg");
+
     // fonction qui calcule le prix de l'item en quantité demandée
     function calculPrix(nom, qte, bdd){
-        console.log("omg2");
         let tmp_pdt;
-        bdd.forEach(e => {
-            console.log("omg3");
+        bdd.forEach(e => {  // on va chercher le prix dans la bdd du distributeur
             if (e.nom === nom){
-                console.log("omg5");
                 tmp_pdt = e;
             }
         });
         let prix = tmp_pdt.prix*qte;
         return prix;
     }
-    console.log("omg4");
-    // on vérifie que le produit peut bien être commandé 
+
+    // on vérifie que le produit peut bien être commandé <=> est en stock chez le distributeur
     if (checkStockDistrib(bdd_distrib, nom, qte) === 0) { // s'il n'y en a plus ou pas assez -> erreur et on stoppe le traitement de la commande
         return;
     }
-    console.log("kgkgkkg");
-    // sinon, on peut procéder au traitement de la commande
+
+    // si oui, on calcule et affiche son prix + total du panier
     let prix=parseFloat(calculPrix(nom, qte, bdd_distrib),2);
     document.getElementById("prix").innerText=prix;
     total+=prix;
     total=parseFloat(total, 2);
     document.getElementById("total").innerText=total;
-    let item_input;
-console.log('8');
+
+
     // on enlève le produit du stock distributeur
     updateStockDistrib(bdd_distrib, nom, qte, id_item_distrib);
+    // on l'ajoute au panier
     ajouterAuPanier(nom, ref, qte, panier, nomtab, tab);
 
     nb_item++;  // on incrémente le numéro d'item pour la suite de la commande        
 
     return;
 }
-
 
 function checkCmd(ref, qte) {   
     console.log("ok4");

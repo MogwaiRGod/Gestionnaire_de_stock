@@ -22,8 +22,7 @@ function itemsStock(nb_item, id) {
 }
 
 // le cas échéant, fonction qui envoie le stock distributeur dans le local storage
-function setStock(stock, id){
-    let index=0;
+function setStock(stock, id, index=0){
     stock.forEach(e => {
         localStorage.setItem(id+index, JSON.stringify(e));
         index++;
@@ -41,6 +40,13 @@ function getStock(stock, id){
     }
 
     return stock;
+}
+
+function videStock(id, stock){
+    for (let i=0; i<stock.length; i++){
+        localStorage.removeItem(id+stock[i].index);
+    }
+    return;
 }
 
 //  fonction qui vérifie que l'item demandé en telle quantité est bien disponible dans le stock distributeur
