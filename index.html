@@ -4,45 +4,74 @@
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Metro</title>
+        <title>TOTO Market</title>
         <link rel="stylesheet" href="stylesheet.css">
+        <link rel="stylesheet" href="https://use.typekit.net/wmc8vot.css">
     </head>
 
     <body>
-        <div id="container-flexbox">
-            <div id="container-inputs">
-                <select id="nom-pdt">
-                    <option id="Huile de palme (L)">Huile de palme (L)</option>
-                    <option id="Gluten (kg)">Gluten (kg)</option>
-                    <option id="Farine de blé T55 (kg)">Farine de blé T55 (kg)</option>
-                    <option id="Sirop de maïs (L)">Sirop de maïs (L)</option>
-                    <option id="Glycérine (L)">Glycérine (L)</option>
-                    <option id="Javel (L)">Javel (L)</option>
-                </select>
-
-                <input id="ref-pdt" placeholder="Référence du produit">
-                <input id="qte-pdt" type="number" min="0" max="100">
-
-                <button id="btn">Ajouter</button>
-                
+        <nav>
+            <img name="icone-hamburger" alt="hamburger" src="iconmonstr-menu-lined.svg" id="ham">
+            <img name="logo-secondaire-toto-market" alt="logo-secondaire-toto-market" src="totomarket_TOTO_market2.svg" id="logo2">
+        </nav>
+        <div id="container">
+            <div id="col1">
+                <label>Votre stock actuel</label>
+                <table id="tableau-stock">
+                    <thead>
+                        <tr>
+                            <th>Nom</th>
+                            <th>Référence</th>
+                            <th>Stock</th>
+                        </tr>
+                    </thead>
+                </table>
             </div>
-            <div id="affichage-montant">
-                <p>Prix : <span id="prix"></span> €</p>
-                <p>Total : <span id="total"></span> €</p>
-            </div>    
-            <table id="tableau-stock">
 
-                <thead>
-                    <tr>
-                        <th>Nom</th>
-                        <th>Référence</th>
-                        <th>Stock</th>
-                    </tr>
-                </thead>
-
-            </table>
-            <button id="btn-valider">Valider</button>
             
+
+            <div id="col2">
+                <img name="logo-toto-market" alt="logo-toto-market" src="totomarket_TOTO_market1.svg" id="logo-principal">
+                
+                <label>Commande</label>
+                <div id="container-inputs">
+                    <select id="nom-pdt">
+                        <option id="Huile de palme (L)">Huile de palme (L)</option>
+                        <option id="Gluten (kg)">Gluten (kg)</option>
+                        <option id="Farine de blé T55 (kg)">Farine de blé T55 (kg)</option>
+                        <option id="Sirop de maïs (L)">Sirop de maïs (L)</option>
+                        <option id="Glycérine (L)">Glycérine (L)</option>
+                        <option id="Javel (L)">Javel (L)</option>
+                    </select>
+
+                    <input id="ref-pdt" placeholder="Référence du produit">
+                    <input id="qte-pdt" type="number" min="0" max="100">
+
+                    <button id="btn">+</button>
+                
+                    <div id="affichage-montant">
+                        <p>Prix : <span id="prix"></span> €</p>
+                        <p>Total : <span id="total"></span> €</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="col3">
+                <div id="tab2">
+                    <svg id='svg-panier'xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M24 3l-.743 2h-1.929l-3.474 12h-13.239l-4.615-11h16.812l-.564 2h-13.24l2.937 7h10.428l3.432-12h4.195zm-15.5 15c-.828 0-1.5.672-1.5 1.5 0 .829.672 1.5 1.5 1.5s1.5-.671 1.5-1.5c0-.828-.672-1.5-1.5-1.5zm6.9-7-1.9 7c-.828 0-1.5.671-1.5 1.5s.672 1.5 1.5 1.5 1.5-.671 1.5-1.5c0-.828-.672-1.5-1.5-1.5z"/></svg>
+                    <label>Votre panier</label>
+                    <table id="tableau-panier">
+                        <thead>
+                            <tr>
+                                <th>Nom</th>
+                                <th>Référence</th>
+                                <th>Stock</th>
+                            </tr>
+                        </thead>
+                    </table>
+                    <button id="btn-valider" onclick="envoiPanier(stock_user, panier, tableau_panier, id_panier)">Valider</button>
+                </div>
+            </div>
         </div>
 
         <script src="bdd.js" type="text/javascript"></script>
@@ -53,15 +82,19 @@
             /*////////////             VARIABLES                       ////////////////*/
 
             let tableau_HTML = document.getElementById("tableau-stock");
+            let tableau_panier = document.getElementById("tableau-panier");
             let total=0;
             let storage_init = false;
-            let panier = [[]];
-            let id_item_distrib = "distrib_item-"; let id_item_user = "item";
+            let panier = [];
+            let id_item_distrib = "distrib_item-"; let id_item_user = "item"; let id_panier = "panier";
             let init=0;
-            let background_ajout = 'rgb(166, 84, 69)';
-            let background_base = 'rgb(81, 81, 27)';
-            let nb_item;
+            let background_ajout = '#EE8539;';
+            let background_base = 'rgba(42,164,206, 0.5)';
+            let nb_item=0;
             nb_item = itemsStock(nb_item, id_item_user);    // le numéro de l'item commandé
+            let hover_svg = "#D9D9DD";
+            let clic_nav = false;
+            let index_panier=0;
 
 
 
@@ -74,17 +107,22 @@
                 stock_distributeur=getStock(stock_distributeur, id_item_distrib); // sinon, on récupère le stock afin d'être à jour
             }
 
-            // de même, on vérifit si l'utilisateur a des items dans son local
-            // console.log(existeStock(id_item_user));
+            // de même, on vérifie si l'utilisateur a des items dans son local
             if (existeStock(id_item_user)) {
                 stock_user=getStock(stock_user, id_item_user);
-                affichageStock(stock_user, tableau_HTML, background_base);
+                affichageStock(stock_user, tableau_HTML, background_base,'stock');
                 storage_init=true;
                 init=1;
             }
 
+            // et on regarde s'il a déjà un panier
+            if (existeStock(id_panier)) {
+                panier=getStock(panier, id_panier);
+                nb_item = panier.length; // nombre d'items dans le panier
+                affichageStock(panier, tableau_panier, background_base,'panier');
+            }
+
             btn.addEventListener('click', () => {   // à l'envoi du formulaire :
-                
                 // récupération des inputs
                 let input_nom = document.getElementById("nom-pdt");
                 input_nom = input_nom.options[input_nom.selectedIndex].value;
@@ -92,15 +130,29 @@
                 let input_qte = document.getElementById("qte-pdt").value;
 
                 // vérification des entrées
-                if (checkCmd(input_ref, input_qte) === 1) {
+                if (checkCmd(input_ref, input_qte)) {
                     // si elles sont correctes, on peut traiter la commande
-                    traiterCmd(input_nom, input_ref, input_qte, stock_user, tableau_HTML, stock_distributeur);
+                    traiterCmd(input_nom, input_ref, input_qte, tableau_panier, stock_distributeur, "panier");
                 } else {
                     return;
                 }
 
                 return 'erreur 1';
             });
+
+            ham.addEventListener('click', () => {
+                let nav = document.getElementById("col1");
+                if (!clic_nav) {
+                    nav.style.visibility = "visible";
+                    clic_nav = true;
+                } else {
+                    nav.style.visibility = "hidden";
+                    clic_nav = false;
+                }
+                return;
+            });
+
+                
 
 
         </script>
